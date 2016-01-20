@@ -52,10 +52,19 @@ var DEFAULT_DIR = 'config',
         return false;
     },
 
+    toAbsolutePath = function(file) {
+        return path.isAbsolute(file) ? file : path.join(process.cwd(), file);
+    },
+
     loadJs = function(file) {
-        file = path.isAbsolute(file) ? file : path.join(process.cwd(), file);
+        file = toAbsolutePath(file);
         delete require.cache[require.resolve(file)];
         return require(file);
+    },
+    loadYaml = function(file) {
+        var yaml = require('js-yaml');
+        file = toAbsolutePath(file);
+        return yaml.safeLoad(fs.readFileSync(file))
     },
     /*
       Given a path to a config file of one of the supported types,
@@ -64,15 +73,39 @@ var DEFAULT_DIR = 'config',
     loadFile = function(file) {
         var loaders = {
             js: loadJs,
-            json: loadJs
+            json: loadJs,
+            yaml: loadYaml
         };
         return loaders[fileType(file)](file);
     },
+    
     loadFiles = function(files) {
-        
+        return _.extend.apply(_,
+                              _.flatten([files.global, files.env, files.local]).map(loadFile))
     },
 
     configuror = function(dirs, env) {
+        var defaults = {
+            dirs: ['./config'],
+            env: process.env.NODE_ENV
+        }, options;
+
+        if( _.isObject(dirs) ) {
+            options = _.extend(defaults, dirs);
+        } else {
+            options = _.extend({}, defaults);
+            if( _.isString(dirs) ) {
+                options.dirs = ['dirs'];
+            } else if( _.isArray(dirs) ) {
+                options.dirs = dirs;
+            }
+
+            if( _.isString(env) ) {
+                options.env = env;
+            }
+        }
+
+        loadFiles(parseFiles(getFiles(options.dirs), options.env))
     }
 ;
 

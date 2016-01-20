@@ -75,9 +75,10 @@ describe('configuror', function() {
     it('loadFile: Given any supported file type, load its data as an object', function() {
         var files = {
             'test/fixtures/config.json': { a:1, B:'asdf'}, 
-            'test/fixtures/config.js': { Z:9, 'a.b.c': '123', 'computed value': 9 }
+            'test/fixtures/config.js': { Z:9, 'a.b.c': '123', 'computed value': 9 },
+            'test/fixtures/config.yml': {"foo":"bar","baz":["qux","quxx"],"corge":null,"grault":1,"garply":true,"waldo":"false","fred":"undefined","emptyArray":[],"emptyObject":{},"emptyString":""},
+            'test/fixtures/config.yaml': {"foo":"bar","baz":["qux","quxx"],"corge":null,"grault":1,"garply":true,"waldo":"false","fred":"undefined","emptyArray":[],"emptyObject":{},"emptyString":""}
         };
-
 
         for( var file in files ) {
             assert.deepEqual(files[file], c.loadFile(file));

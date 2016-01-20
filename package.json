@@ -18,6 +18,7 @@
     "mocha": "^2.3.4"
   },
   "dependencies": {
+    "js-yaml": "^3.5.2",
     "lodash": "^4.0.0"
   }
 }
