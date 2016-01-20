@@ -84,4 +84,17 @@ describe('configuror', function() {
             assert.deepEqual(files[file], c.loadFile(file));
         }
     });
+
+
+    it('configuror: Given a directory of configs, it can return an object of merged settings', function() {
+        var dir = 'test/fixtures/config3',
+            expected = {"apiKey": "123zyx", "dbName": "products", "host": "localhost", "port": 3306 };
+
+        assert.deepEqual(expected, c(dir));
+
+        expected.dbName = 'testDb';
+        assert.deepEqual(expected, c(dir, 'test'));
+
+        assert.deepEqual(expected, c({dirs:[dir], env:'test'}));
+    });
 });

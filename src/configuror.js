@@ -91,11 +91,11 @@ var DEFAULT_DIR = 'config',
         }, options;
 
         if( _.isObject(dirs) ) {
-            options = _.extend(defaults, dirs);
+            options = _.extend({}, defaults, dirs);
         } else {
             options = _.extend({}, defaults);
             if( _.isString(dirs) ) {
-                options.dirs = ['dirs'];
+                options.dirs = [dirs];
             } else if( _.isArray(dirs) ) {
                 options.dirs = dirs;
             }
@@ -105,7 +105,7 @@ var DEFAULT_DIR = 'config',
             }
         }
 
-        loadFiles(parseFiles(getFiles(options.dirs), options.env))
+        return loadFiles(parseFiles(getFiles(options.dirs), options.env))
     }
 ;
 
