@@ -30,19 +30,23 @@ config will contain values from files in config/ merged.
 by adding files with .local. preceding the extension allows overriding config
 options with machine specific values.
 
+#+BEGIN_SRC sh
 config/
   db.js
   api.js
   db.local.js
+#+END_SRC
 
 *** Environment style configuration
 by adding files with .env. preceding the extension allows overriding config
 options with environment specific values.
 
+#+BEGIN_SRC sh
 config/
   db.js
   api.js
   api.test.js
+#+END_SRC
 
 #+BEGIN_SRC sh
 NODE_ENV=test node app.js
