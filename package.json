@@ -1,0 +1,23 @@
+{
+  "name": "configuror",
+  "version": "0.1.0",
+  "description": "A nodejs environment config loader supporting global/local style configuration and env style (dev/test/staging/prod)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "config",
+    "env",
+    "environment"
+  ],
+  "author": "Jonathan Willis",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  },
+  "dependencies": {
+    "lodash": "^4.0.0"
+  }
+}
