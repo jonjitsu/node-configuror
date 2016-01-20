@@ -2,7 +2,15 @@ var assert = require('chai').assert,
     is = assert.strictEqual,
     p = require('path'),
     _ = require('lodash'),
-    c = require('../src/configuror')
+    c = require('../src/configuror'),
+
+    appendTo = function(dir, files) {
+        return files.reduce(function(all, file) {
+            if( _.isArray(file) ) return all.concat(appendTo(dir, file));
+            all.push(p.join(dir, file));
+            return all;
+        }, []);
+    }
 ;
 
 describe('configuror', function() {
@@ -40,13 +48,7 @@ describe('configuror', function() {
     });
 
 
-    function appendTo(dir, files) {
-        return files.reduce(function(all, file) {
-            if( _.isArray(file) ) return all.concat(appendTo(dir, file));
-            all.push(p.join(dir, file));
-            return all;
-        }, []);
-    }
+
     it('parseFiles: Given a list of files and an environment, it can return a map of filetype -> list of files', function() {
         var dir = 'test/fixtures/config3',
             global = ['c1.js', 'c2.json', 'c3.yml' ],
@@ -67,5 +69,18 @@ describe('configuror', function() {
 
         expected.env = [];
         assert.deepEqual(expected, c.parseFiles(files));
+    });
+
+
+    it('loadFile: Given any supported file type, load its data as an object', function() {
+        var files = {
+            'test/fixtures/config.json': { a:1, B:'asdf'}, 
+            'test/fixtures/config.js': { Z:9, 'a.b.c': '123', 'computed value': 9 }
+        };
+
+
+        for( var file in files ) {
+            assert.deepEqual(files[file], c.loadFile(file));
+        }
     });
 });

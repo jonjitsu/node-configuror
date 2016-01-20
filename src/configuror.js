@@ -39,10 +39,45 @@ var DEFAULT_DIR = 'config',
                 return map;
             }, base);
     },
-    configuror = function() {}
+
+    fileType = function(file) {
+        var types = {
+            js: 'js',
+            json: 'json',
+            yaml: '(?:yml|yaml)'
+        }, type;
+        for(type in types) {
+            if( new RegExp('\\.' + types[type] + '$').test(file) ) return type;
+        }
+        return false;
+    },
+
+    loadJs = function(file) {
+        file = path.isAbsolute(file) ? file : path.join(process.cwd(), file);
+        delete require.cache[require.resolve(file)];
+        return require(file);
+    },
+    /*
+      Given a path to a config file of one of the supported types,
+      return an object representing the contained data.
+     */
+    loadFile = function(file) {
+        var loaders = {
+            js: loadJs,
+            json: loadJs
+        };
+        return loaders[fileType(file)](file);
+    },
+    loadFiles = function(files) {
+        
+    },
+
+    configuror = function(dirs, env) {
+    }
 ;
 
 configuror.getEnvFromFile = getEnvFromFile;
 configuror.getFiles = getFiles;
 configuror.parseFiles = parseFiles;
+configuror.loadFile = loadFile;
 module.exports = configuror;
