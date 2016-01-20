@@ -1,0 +1,82 @@
+
+* Configuror
+
+Config file loader based on 2 different configuration styles:
+- Global/Local
+- Environment (dev/test/staging/prod/etc...)
+
+Supporting multiple file formats:
+- .js
+- .json
+- .yml
+
+Sane defaults included...
+
+** Quick start
+
+Given the following directory structure in your project root:
+
+config/
+  db.js
+  api.js
+
+#+BEGIN_SRC js
+var config = require('configuror')();
+#+END_SRC
+
+config will contain values from files in config/ merged.
+
+*** Global/Local style configuration
+by adding files with .local. preceding the extension allows overriding config
+options with machine specific values.
+
+config/
+  db.js
+  api.js
+  db.local.js
+
+*** Environment style configuration
+by adding files with .env. preceding the extension allows overriding config
+options with environment specific values.
+
+config/
+  db.js
+  api.js
+  api.test.js
+
+#+BEGIN_SRC sh
+NODE_ENV=test node app.js
+#+END_SRC
+
+With NODE_ENV set to test the api.test.js will override values in api.js
+
+** Details
+
+Both global/local and environment style configurations can be mixed.
+
+There are no predefined environments such as dev/test/staging/production so you
+can use any name desired for the environments.
+
+Any of the above mentioned file formats can be used. 
+db.local.yml will override db.js.
+
+*** File formats
+
+**** JS
+#+BEGIN_SRC js
+module.exports = {
+  host: "example.com"
+}
+#+END_SRC
+
+**** JSON
+#+BEGIN_SRC js
+{
+  "user": "jim"
+}
+#+END_SRC
+
+**** YAML
+#+BEGIN_SRC yaml
+ipaddress: 127.0.0.1
+#+END_SRC
