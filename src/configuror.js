@@ -24,9 +24,25 @@ var DEFAULT_DIR = 'config',
                 }));
             }, []);
     },
+
+    parseFiles = function(files, ENV) {
+        var base = {global:[], local:[], env:[]};
+        return files
+            .reduce(function(map, file) {
+                var env = getEnvFromFile(file);
+
+                if( env==='global' || env==='local' ) {
+                    map[env].push(file);
+                } else if( ENV!==undefined && ENV===env ) {
+                    map.env.push(file);
+                }
+                return map;
+            }, base);
+    },
     configuror = function() {}
 ;
 
 configuror.getEnvFromFile = getEnvFromFile;
 configuror.getFiles = getFiles;
+configuror.parseFiles = parseFiles;
 module.exports = configuror;

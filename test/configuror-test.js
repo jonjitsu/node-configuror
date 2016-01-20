@@ -1,5 +1,7 @@
 var assert = require('chai').assert,
     is = assert.strictEqual,
+    p = require('path'),
+    _ = require('lodash'),
     c = require('../src/configuror')
 ;
 
@@ -22,7 +24,8 @@ describe('configuror', function() {
         is('staging', c.getEnvFromFile('c-o_n.fig.staging.yml'));
     });
 
-    it('getFiles: can get a list of config files given a list of directories', function() {
+
+    it('getFiles: can get a list of config files given one or more directories', function() {
         var dir = 'test/fixtures/config1/',
             expected = ['c1.js', 'c1.local.js'].map(function(f) { return dir + f; });
 
@@ -34,5 +37,35 @@ describe('configuror', function() {
                 return files.concat(['c1.js', 'c1.local.js'].map(function(f) { return dir + f; }));
             }, []);
         assert.deepEqual(expected, c.getFiles(dir));
+    });
+
+
+    function appendTo(dir, files) {
+        return files.reduce(function(all, file) {
+            if( _.isArray(file) ) return all.concat(appendTo(dir, file));
+            all.push(p.join(dir, file));
+            return all;
+        }, []);
+    }
+    it('parseFiles: Given a list of files and an environment, it can return a map of filetype -> list of files', function() {
+        var dir = 'test/fixtures/config3',
+            global = ['c1.js', 'c2.json', 'c3.yml' ],
+            local = ['c1.local.json'],
+            env = ['c3.test.js', 'c4.test.yml'],
+            files = appendTo(dir, [global, local, env]),
+            expected = {
+                global: appendTo(dir, global),
+                local: appendTo(dir, local),
+                env: appendTo(dir, env)
+            }
+
+        assert.deepEqual(expected, c.parseFiles(files, 'test'));
+
+        files.push('scrap.prod.js');
+        files.push('scrap.staging.js');
+        assert.deepEqual(expected, c.parseFiles(files, 'test'));
+
+        expected.env = [];
+        assert.deepEqual(expected, c.parseFiles(files));
     });
 });
