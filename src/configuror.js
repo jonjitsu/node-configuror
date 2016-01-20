@@ -15,10 +15,18 @@ var DEFAULT_DIR = 'config',
     },
     getFiles = function(dirs) {
         if( _.isString(dirs) ) dirs = [dirs];
-
+ 
+        return dirs
+            .reduce(function(allFiles, dir) {
+                var files = fs.readdirSync(dir);
+                return allFiles.concat(files.map(function(file) {
+                    return path.join(dir, file);
+                }));
+            }, []);
     },
     configuror = function() {}
 ;
 
 configuror.getEnvFromFile = getEnvFromFile;
+configuror.getFiles = getFiles;
 module.exports = configuror;

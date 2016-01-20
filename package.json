@@ -4,7 +4,7 @@
   "description": "A nodejs environment config loader supporting global/local style configuration and env style (dev/test/staging/prod)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "config",

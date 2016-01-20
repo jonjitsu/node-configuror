@@ -21,4 +21,18 @@ describe('configuror', function() {
         is('preprod', c.getEnvFromFile('con_fig.preprod.yml'));
         is('staging', c.getEnvFromFile('c-o_n.fig.staging.yml'));
     });
+
+    it('getFiles: can get a list of config files given a list of directories', function() {
+        var dir = 'test/fixtures/config1/',
+            expected = ['c1.js', 'c1.local.js'].map(function(f) { return dir + f; });
+
+        assert.deepEqual(expected, c.getFiles(dir));
+
+
+        var dir = ['test/fixtures/config1/', 'test/fixtures/config2/'],
+            expected = dir.reduce(function(files, dir) {
+                return files.concat(['c1.js', 'c1.local.js'].map(function(f) { return dir + f; }));
+            }, []);
+        assert.deepEqual(expected, c.getFiles(dir));
+    });
 });
