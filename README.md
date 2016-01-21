@@ -40,9 +40,9 @@ Sane defaults included&#x2026;
 
 Given the following directory structure in your project root:
 
-config/
-  db.js
-  api.js
+    config/
+      db.js
+      api.js
 
     var config = require('configuror')();
 

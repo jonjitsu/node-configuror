@@ -16,9 +16,11 @@ Sane defaults included...
 
 Given the following directory structure in your project root:
 
+#+BEGIN_SRC sh
 config/
   db.js
   api.js
+#+END_SRC
 
 #+BEGIN_SRC js
 var config = require('configuror')();
