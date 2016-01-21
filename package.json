@@ -2,6 +2,10 @@
   "name": "configuror",
   "version": "0.1.0",
   "description": "A nodejs environment config loader supporting global/local style configuration and env style (dev/test/staging/prod)",
+  "repository": {
+     "type": "git",
+     "url": "https://github.com/jonjitsu/node-configuror"
+  },
   "main": "src/configuror.js",
   "scripts": {
     "test": "mocha"
