@@ -1,6 +1,6 @@
 {
   "name": "configuror",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A nodejs environment config loader supporting global/local style configuration and env style (dev/test/staging/prod)",
   "repository": {
      "type": "git",

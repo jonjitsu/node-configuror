@@ -130,8 +130,10 @@ var DEFAULT_DIR = 'config',
             js: loadJs,
             json: loadJs,
             yaml: loadYaml
-        };
-        return loaders[fileType(file)](file);
+        },
+            loader = loaders[fileType(file)];
+
+        return typeof loader==='function' ? loader(file) : {};
     },
 
     /**
